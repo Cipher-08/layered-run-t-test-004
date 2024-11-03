@@ -2,13 +2,13 @@ terraform {
   backend "s3" {
     bucket         = "prod-bucket-73283278"
     key            = "layer-one/terraform.tfstate"
-    region         = "us-east-1"
+    region         = "ap-south-1"
     encrypt        = true
   }
 }
 
 provider "aws" {
-  region = "us-east-1"
+  region = "ap-south-1"
 }
 
 # VPC
