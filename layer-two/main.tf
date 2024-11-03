@@ -2,6 +2,14 @@ provider "aws" {
   region = "us-east-1"
 }
 
+# Import outputs from layer-one
+data "terraform_remote_state" "layer_one" {
+  backend = "local"
+  config = {
+    path = "../layer-one/terraform.tfstate"
+  }
+}
+
 # IAM Role
 resource "aws_iam_role" "layer_two_role" {
   name               = "LayerTwoRole"
@@ -27,10 +35,10 @@ resource "aws_iam_role_policy_attachment" "layer_two_policy_attach" {
 
 # EC2 Instance
 resource "aws_instance" "layer_two_instance" {
-  ami           = "ami-0e86e20dae9224db8"
+  ami           = "ami-0e86e20dae9224db8"  # Replace with a valid AMI
   instance_type = "t2.micro"
-  subnet_id     = aws_subnet.layer_one_subnet.id  # Reference from layer one
-  vpc_security_group_ids = [aws_security_group.layer_one_sg.id]
+  subnet_id     = data.terraform_remote_state.layer_one.outputs.subnet_id
+  vpc_security_group_ids = []  # Add security group if needed
 
-  depends_on = [aws_vpc.layer_one_vpc]  # Explicit dependency on Layer One VPC
+  depends_on = [data.terraform_remote_state.layer_one]
 }
