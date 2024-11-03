@@ -4,3 +4,11 @@ hooks:
       - type: oidc
         provider: aws
         role_arn: "arn:aws:iam::017777978390:role/terrateam"       
+dirs:
+  layer-one:
+    when_modified:
+      file_patterns: ["**/*.tf"]
+  layer-two:
+    when_modified:
+      depends_on: 'dir:layer-one'
+      file_patterns: ["**/*.tf"]
