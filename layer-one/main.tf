@@ -39,3 +39,13 @@ resource "aws_route_table_association" "layer_one_route_table_association" {
   subnet_id      = aws_subnet.layer_one_subnet.id
   route_table_id = aws_route_table.layer_one_route_table.id
 }
+
+# Output VPC ID
+output "vpc_id" {
+  value = aws_vpc.layer_one_vpc.id
+}
+
+# Output Subnet ID
+output "subnet_id" {
+  value = aws_subnet.layer_one_subnet.id
+}
